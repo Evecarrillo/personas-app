@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Departamento;
 use Illuminate\Http\Request;
-use App\Models\Departamento;  
-use Illuminate\Support\Facades\DB;  
-
+use Illuminate\Support\Facades\DB;
 class DepartamentoController extends Controller
 {
     /**
@@ -21,7 +20,7 @@ class DepartamentoController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * @return \Illuminate\Http\Response
      */
     public function create()
     {
@@ -32,7 +31,8 @@ class DepartamentoController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
@@ -62,22 +62,43 @@ class DepartamentoController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $departamento = Departamento::find($id);
+        $pais = DB::table('tb_pais')
+        ->orderBy('pais_nomb')
+        ->get();
+        return view('departamento.edit',['departamento' => $departamento, 'pais' => $pais]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * 
      */
     public function update(Request $request, string $id)
     {
-        //
+        $departamento = Departamento::find($id);
+        $departamento->depa_nomb = $request->name;
+        $departamento->pais_codi = $request->code;
+        $departamento->save();
+        
+        $departamentos = DB::table('tb_departamento')
+            ->join('tb_pais', 'tb_departamento.pais_codi', '=', 'tb_pais.pais_codi')
+            ->select('tb_departamento.*', 'tb_pais.pais_nomb')
+            ->get();
+        return view('departamento.index', ['departamentos' => $departamentos]);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @param int $id
+     * @return \Illuminate\Http\Response
      */
     public function destroy(string $id)
     {
-        //
+        $departamento = Departamento::find($id);
+        $departamento->delete();
+        
+        $departamentos = DB::table('tb_departamento')
+            ->join('tb_pais', 'tb_departamento.pais_codi', '=', 'tb_pais.pais_codi')
+            ->select('tb_departamento.*', 'tb_pais.pais_nomb')
+            ->get();
+        return view('departamento.index', ['departamentos' => $departamentos]);
     }
 }

@@ -611,12 +611,7 @@ namespace App\Models {
     /**
      * App\Models\Municipio
      *
-     * @property mixed $depa_codi
-     * @property string $muni_nomb
-     * @property int $muni_codi
-     * @method static \Illuminate\Database\Eloquent\Builder<Municipio>|Municipio whereMuniCodi($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Municipio>|Municipio whereMuniNomb($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Municipio>|Municipio whereDepaCodi($value)
+     * @property-read \App\Models\Municipio $municipio
      * @method static \Illuminate\Database\Eloquent\Builder<Municipio>|Municipio newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Municipio>|Municipio newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Municipio>|Municipio query()
